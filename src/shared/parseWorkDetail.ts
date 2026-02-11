@@ -65,21 +65,35 @@ export function parseWorkDetail(raw: string): WorkSection[] {
       continue;
     }
 
-    // Image placeholder: **[배치: file]** or **배치 : file**  (various patterns)
-    const imgMatch = trimmed.match(/^\*\*\[?배치\s*[:：]\s*(.+?)\]?\*\*/);
+    // Image placeholder: **[배치: file]** or **배치 : file (caption)**
+    const imgMatch = trimmed.match(/^\*\*\[?배치\s*[:：]\s*(.+?)\]?\*\*$/);
     if (imgMatch) {
-      let src = imgMatch[1].trim();
-      // strip trailing ** or ()
-      src = src.replace(/\*\*$/, '').replace(/\)$/, '').trim();
-      // Check next non-empty line for caption
+      let rawContent = imgMatch[1].trim();
+      // strip trailing ] or **
+      rawContent = rawContent.replace(/\]$/, '').replace(/\*\*$/, '').trim();
+
+      let src: string;
       let caption: string | undefined;
-      let j = i + 1;
-      while (j < lines.length && lines[j].trim() === '') j++;
-      if (j < lines.length) {
-        const capMatch = lines[j].trim().match(/^\*\((.+)\)\*$/);
-        if (capMatch) {
-          caption = capMatch[1].trim();
-          i = j;
+
+      // Inline caption: "file.ext (caption text)" — split at extension boundary
+      const inlineCap = rawContent.match(/^(.+?\.\w{2,5})\s+\((.+)\)$/);
+      if (inlineCap) {
+        src = inlineCap[1].trim();
+        caption = inlineCap[2].trim();
+      } else {
+        src = rawContent;
+      }
+
+      // If no inline caption, check next non-empty line for *(caption)*
+      if (!caption) {
+        let j = i + 1;
+        while (j < lines.length && lines[j].trim() === '') j++;
+        if (j < lines.length) {
+          const capMatch = lines[j].trim().match(/^\*\((.+)\)\*$/);
+          if (capMatch) {
+            caption = capMatch[1].trim();
+            i = j;
+          }
         }
       }
       currentSection.blocks.push({ type: 'image', src, caption });

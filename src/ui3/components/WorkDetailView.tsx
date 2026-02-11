@@ -10,7 +10,7 @@ interface Props {
   onBack: () => void;
 }
 
-export function WorkDetailView({ title, heroSubtitle, parsedWork, onBack }: Props) {
+export function WorkDetailView({ activeWork, title, heroSubtitle, parsedWork, onBack }: Props) {
   return (
     <section id="work-detail" className="section">
       <div className="section-eyebrow">WORK</div>
@@ -35,7 +35,7 @@ export function WorkDetailView({ title, heroSubtitle, parsedWork, onBack }: Prop
           .filter((s) => s.name !== 'Hero')
           .map((section) => (
             <div key={section.name} className="work-detail-section">
-              <WorkDetailBlocks blocks={section.blocks} />
+              <WorkDetailBlocks blocks={section.blocks} activeWork={activeWork} />
             </div>
           ))}
     </section>
