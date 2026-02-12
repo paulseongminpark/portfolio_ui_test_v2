@@ -54,6 +54,16 @@ src/shared/seed.ts (14개 섹션)
 
 ## 과거 결정
 
+**2026-02-12**
+- W1~W14 로드맵 확정 (6개 Phase 구성)
+- Phase 1 (Core UI): W6~W7
+- Phase 2 (Content): W8~W9
+- Phase 3 (Interaction): W10
+- Phase 4 (Extension): W11
+- Phase 5 (Polish): W12~W13
+- Phase 6 (Deploy): W14
+- 이유: 단계별 구조화로 진행 명확화, 변경 가능성 열어둠
+
 **2026-02-10**
 - Work 항목 3개 확정 (S4/S5 삭제)
 - All 탭: Work는 OpenAI 스타일 가로 카드 3개
