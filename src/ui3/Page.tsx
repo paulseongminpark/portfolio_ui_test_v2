@@ -8,6 +8,7 @@ import { useWorkRouting } from './hooks/useWorkRouting';
 import { renderBold } from './components/WorkDetailBlocks';
 import { WorkDetailView } from './components/WorkDetailView';
 import { TocPane } from './components/TocPane';
+import { TechReviewCards } from './components/TechReviewCards';
 
 type TabOption = 'All' | Category;
 
@@ -401,6 +402,12 @@ export default function UI3Page() {
                     <>
                       <h2 className="section-title">{sys.relationTitle}</h2>
                       <p className="section-description">{renderBold(sys.relationBody)}</p>
+                    </>
+                  ) : section.id === 'tech-review' ? (
+                    <>
+                      <h2 className="section-title">{section.title}</h2>
+                      <p className="section-description">{section.description}</p>
+                      <TechReviewCards />
                     </>
                   ) : (
                     <>
