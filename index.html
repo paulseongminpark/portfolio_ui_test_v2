@@ -1,13 +1,17 @@
-<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>portfolio_ui_test_v2</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+---
+layout: null
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script>
+    (function() {
+      var saved = localStorage.getItem('tech-review-lang');
+      var lang = saved || (navigator.language.startsWith('ko') ? 'ko' : 'en');
+      window.location.replace('{{ site.baseurl }}/' + lang + '/');
+    })();
+  </script>
+</head>
+<body></body>
 </html>

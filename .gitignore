@@ -34,3 +34,10 @@ vite_err*.txt
 vite_out.txt
 nul
 public/work/
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/
