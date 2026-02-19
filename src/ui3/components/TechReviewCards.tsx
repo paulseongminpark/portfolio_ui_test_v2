@@ -13,10 +13,10 @@ const BLOG_URL = 'https://paulseongminpark.github.io/tech-review';
 
 export function TechReviewCards() {
   const [posts, setPosts] = useState<ReviewPost[]>([]);
-  const [lang, setLang] = useState<'ko' | 'en'>('en');
+  const [lang, setLang] = useState<'ko' | 'en'>('ko');
 
   useEffect(() => {
-    const browserLang = navigator.language.startsWith('ko') ? 'ko' : 'en';
+    const browserLang = navigator.language.startsWith('en') ? 'en' : 'ko';
     setLang(browserLang);
 
     fetch(FEED_URL)
@@ -35,7 +35,7 @@ export function TechReviewCards() {
         gap: '1rem',
         marginBottom: '1.5rem'
       }}>
-        {posts.slice(0, 4).map(post => (
+        {posts.slice(0, 3).map(post => (
           <a
             key={post.pair}
             href={`${BLOG_URL}${post.url[lang]}`}
