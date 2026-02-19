@@ -1,6 +1,6 @@
 # STATE — 포트폴리오
 
-## 지금 상태 (2026-02-15 기준)
+## 지금 상태 (2026-02-19 기준)
 
 **완료**
 - W1~W5: Work 슬롯 재구성 + TOC + All탭 카드 + 상세 라우팅 + MD 주입
@@ -9,6 +9,14 @@
 - 프로젝트 마이그레이션: portfolio_ui_test_v2 → 01_projects/02_portfolio
 - GitHub repo rename: portfolio_20260215
 - .claude/ 설정 완료 (CLAUDE.md, settings.json, skills)
+- **Tech Review 자동화 파이프라인 완성** (2026-02-19)
+  - Perplexity 예약 리서치 → Gmail → GAS → GitHub Actions → Jekyll 포스트 자동 생성
+  - 매일 07:00 KST 자동 실행
+  - KO/EN 동시 생성, 뉴스 헤드라인 제목, 태그 자동 추출
+  - deploy 자동 트리거 (gh workflow run)
+  - Comments 워크플로우: [YYYYMMDD 내용] 형식 → KO/EN 포스트 반영
+  - 인코딩/한자 문제 해결 (fetch-perplexity.js + 프롬프트)
+  - 포트폴리오 통합: TechReviewCards (최신 3개, 브라우저 언어 감지)
 
 **다음 할 일 (W1~W14 로드맵 기준)**
 - W6: OpenAI 스타일 레이아웃 전환 (미디어 블록 중심, 타이포/색상, Footnote)
@@ -49,6 +57,19 @@ index.html → src/main.tsx → src/App.tsx → src/ui3/Page.tsx → src/shared/
 ---
 
 ## 과거 결정
+
+**2026-02-19**
+- Tech Review 자동화 파이프라인 전체 완성
+- TECH_REVIEW_TOKEN 재발급 (classic PAT, repo scope)
+- Perplexity refusal 방지: search_recency_filter + system message + 프롬프트 지침
+- deploy 자동 트리거: gh workflow run + actions: write 권한
+- future: true 추가 (_config.yml)
+- 소스 링크 수정: citations 배열 처리 (fetch-perplexity.js)
+- 포스트 제목 뉴스 헤드라인 형식 (TITLE/TAGS 마커)
+- 인코딩/한자 자동 제거 (U+FFFD, CJK 범위)
+- Comments 형식 단순화: [YYYYMMDD 내용]
+- 기존 포스트 보호 (skip-if-exists)
+- 포트폴리오 TechReviewCards: 3개, 브라우저 언어 감지
 
 **2026-02-16**
 - STATE.md URL 전환: GitHub Pages → raw.githubusercontent.com (GPT 읽기 안정성 개선)
