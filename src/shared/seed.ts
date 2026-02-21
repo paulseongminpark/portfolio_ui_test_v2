@@ -1,6 +1,6 @@
 import homeContentRaw from '../content/HOME_INTRO_TO_RELATION_KO.md?raw';
 
-export type Category = 'About' | 'System' | 'Work' | 'Writing' | 'Resume' | 'Contact';
+export type Category = 'About' | 'System' | 'Work' | 'Writing' | 'Resume' | 'Contact' | 'Lab';
 
 export interface Section {
   id: string;
@@ -156,6 +156,15 @@ export const sections: Section[] = [
     title: 'Contact',
     shortTitle: 'Contact',
     description: 'Contact placeholder content',
+    heroRatio: '16:9'
+  },
+  {
+    id: 'lab-ui',
+    category: 'Lab',
+    eyebrow: 'Ongoing',
+    title: 'UI Lab',
+    shortTitle: 'UI Lab',
+    description: 'monet-registry 컴포넌트를 실험하고 포트폴리오 UI를 진화시키는 과정을 기록합니다.',
     heroRatio: '16:9'
   }
 ];
