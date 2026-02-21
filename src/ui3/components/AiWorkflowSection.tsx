@@ -187,18 +187,13 @@ const SKILL_GROUPS = [
     label: "운영",
     skills: [
       { name: "/morning", desc: "모든 프로젝트 현황 + TODO 통합 브리핑" },
-      { name: "/todo", desc: "daily-memo Inbox 동기화 + 할 일 관리" },
-      { name: "/sync-all", desc: "전체 프로젝트 STATE 갱신 + git push" },
       { name: "/catchup", desc: "새 세션 시작 시 5초 만에 이전 작업 복구" },
-      { name: "/session-insights", desc: "현재 세션 토큰 소비 + 비용 분석" },
     ],
   },
   {
     label: "문서",
     skills: [
-      { name: "/docs-review", desc: "stale 문서 감지 + 업데이트 방향 제안" },
-      { name: "/research", desc: "코드베이스 + 웹 딝 리서치 워크플로우" },
-      { name: "/handoff", desc: "다른 AI에게 전달할 컨텍스트 문서 생성" },
+      { name: "/research", desc: "코드베이스 + 웹 딥 리서치 워크플로우" },
       { name: "/gpt-review", desc: "설계·플랜을 GPT 비판적 리뷰용 프롬프트로 포맷" },
     ],
   },
@@ -207,7 +202,6 @@ const SKILL_GROUPS = [
     skills: [
       { name: "/commit-push-pr", desc: "커밋·푸시·PR 생성을 한 번에" },
       { name: "/verify", desc: "모든 프로젝트 규칙 검증 (커밋 전 실행)" },
-      { name: "/verify-project-rules", desc: "브랜치·커밋 메시지·STATE 형식 검증" },
     ],
   },
   {
@@ -215,7 +209,6 @@ const SKILL_GROUPS = [
     skills: [
       { name: "/skill-creator", desc: "새 스킬 파일 구조화 + 패키징 가이드" },
       { name: "/subagent-creator", desc: "전문 에이전트 설계 + 시스템 프롬프트 작성" },
-      { name: "/hook-creator", desc: "Claude Code 훅 이벤트 설정 + 레퍼런스" },
     ],
   },
 ];
@@ -274,7 +267,34 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* 2. 시스템 진화 타임라인 */}
+      {/* 2. 설계 철학 7가지 */}
+      <div>
+        <div style={label}>설계 철학</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          여러 AI를 쓰면서 정보가 흩어지고 컨텍스트가 날아가는 문제를 해결하려면, 철학이 먼저 있어야 했다. 도구를 먼저 고르면 구조가 도구에 종속된다. 원칙을 먼저 세우면 도구는 교체 가능해진다.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}>
+          {[
+            { title: "단일 진실 소스", desc: "STATE.md가 유일한 진실. 다른 경로는 읽기만 한다.", icon: "①" },
+            { title: "쓰기 권한 분리", desc: "Claude Code만 파일을 쓴다. 나머지 AI는 읽기만 한다.", icon: "②" },
+            { title: "사고는 휘발, 기록은 남는다", desc: "GPT 사고 → 파일 기록 → Claude 실행 → Git 영구 보존", icon: "③" },
+            { title: "토큰은 자원", desc: "CLAUDE.md 146줄 → 4줄로 압축. 매 턴 38,000토큰 절감. (초기 버전 기준)", icon: "④" },
+            { title: "구조가 규율을 강제한다", desc: "규칙이 단순할수록 일관성은 올라간다. 복잡한 규칙은 깨진다.", icon: "⑤" },
+            { title: "자동화는 최소한으로", desc: "자동화가 늘수록 통제 밖의 일이 생긴다. 핵심 3가지만.", icon: "⑥" },
+            { title: "세션 간 기억", desc: "Auto Memory 3단계: 감지 → 검증 → 정리. 세션이 끊겨도 기억한다.", icon: "⑦" },
+          ].map((p) => (
+            <div key={p.title} style={{ border: "1px solid #e5e5e5", borderRadius: 10, padding: "16px 18px", background: "#fafafa" }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 6 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#2563eb", flexShrink: 0 }}>{p.icon}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a1a" }}>{p.title}</span>
+              </div>
+              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.6, margin: 0, paddingLeft: 23 }}>{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. 시스템 진화 타임라인 */}
       <div>
         <div style={label}>시스템 진화</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
@@ -323,7 +343,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* 3. 에이전트 계층 그리드 */}
+      {/* 4. 에이전트 계층 그리드 */}
       <div>
         <div style={label}>에이전트 아키텍처 (14개)</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
@@ -370,7 +390,33 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* 4. 자동화 워크플로우 */}
+      {/* 5. 에이전트 모델 선택 전략 */}
+      <div>
+        <div style={label}>에이전트 모델 선택 전략</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          각 에이전트는 역할에 맞는 모델을 지정한다. 무조건 Opus를 쓰면 비용이 폭증하고, 무조건 Haiku를 쓰면 품질이 떨어진다. 작업 난이도에 따라 모델을 분리하는 것이 핵심이다.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+          {[
+            { model: "Haiku", role: "수집·확인·포맷", agents: ["commit-writer", "morning-briefer"], color: "#059669", bg: "#ecfdf5", border: "#a7f3d0", desc: "빠르고 저렴. 반복 작업에 최적." },
+            { model: "Sonnet", role: "분석·검색·중간 복잡도", agents: ["orch-state", "compressor", "pf-context", "pf-deployer", "gemini-analyzer"], color: "#2563eb", bg: "#eff4ff", border: "#c7d7fd", desc: "속도와 품질의 균형. 기본값." },
+            { model: "Opus", role: "설계·리뷰·복잡한 실행", agents: ["code-reviewer", "pf-reviewer", "orch-doc-writer", "security-auditor"], color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe", desc: "품질이 중요할 때. 핵심 결정에만." },
+          ].map((m) => (
+            <div key={m.model} style={{ border: `1px solid ${m.border}`, borderRadius: 10, padding: "16px 18px", background: m.bg }}>
+              <div style={{ fontSize: 16, fontWeight: 700, color: m.color, marginBottom: 4 }}>{m.model}</div>
+              <div style={{ fontSize: 11, color: "#555", fontWeight: 600, marginBottom: 10 }}>{m.role}</div>
+              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.5, margin: "0 0 12px" }}>{m.desc}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                {m.agents.map((a) => (
+                  <span key={a} style={{ fontSize: 10, color: m.color, background: "#fff", border: `1px solid ${m.border}`, borderRadius: 4, padding: "2px 6px", fontFamily: "monospace" }}>{a}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 6. 자동화 워크플로우 */}
       <div>
         <div style={label}>자동화 워크플로우</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
@@ -408,11 +454,40 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* 5. CLAUDE.md & 컨텍스트 엔지니어링 */}
+      {/* 7. 일일 작업 패턴 */}
+      <div>
+        <div style={label}>일일 작업 패턴</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          모든 작업은 4가지 패턴 중 하나로 귀결된다. 어떤 패턴인지 먼저 판단하면 어떤 AI를 어떤 순서로 쓸지 자동으로 결정된다.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
+          {[
+            { label: "패턴 A", title: "단순 실행", flow: ["Claude Code", "→ /sync"], desc: "명확한 태스크. 직접 실행 후 커밋.", color: "#2563eb", bg: "#eff4ff", border: "#c7d7fd" },
+            { label: "패턴 B", title: "설계 + 실행", flow: ["GPT (전략)", "→ 파일 기록", "→ Claude 실행", "→ /sync"], desc: "복잡한 결정이 필요할 때. GPT가 방향을 잡으면 Claude가 실행한다.", color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe" },
+            { label: "패턴 C", title: "리서치 + 실행", flow: ["Perplexity (검색)", "→ Claude 실행", "→ /sync"], desc: "최신 정보가 필요할 때. Perplexity가 찾으면 Claude가 적용한다.", color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+            { label: "패턴 D", title: "검증 + 수정", flow: ["Gemini (전체 분석)", "→ Claude 수정", "→ /sync"], desc: "코드베이스 전체 검토 필요 시. Gemini 1M 토큰으로 전체를 보고 Claude가 수정한다.", color: "#059669", bg: "#ecfdf5", border: "#a7f3d0" },
+          ].map((p) => (
+            <div key={p.label} style={{ border: `1px solid ${p.border}`, borderRadius: 10, padding: "16px 18px", background: p.bg }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: p.color, textTransform: "uppercase", letterSpacing: "0.04em", background: "#fff", border: `1px solid ${p.border}`, borderRadius: 20, padding: "2px 8px" }}>{p.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a1a" }}>{p.title}</span>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 10 }}>
+                {p.flow.map((step) => (
+                  <span key={step} style={{ fontSize: 11, color: p.color, fontWeight: 500 }}>{step}</span>
+                ))}
+              </div>
+              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 8. CLAUDE.md & 컨텍스트 엔지니어링 */}
       <div>
         <div style={label}>CLAUDE.md & 컨텍스트 엔지니어링</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
-          여러 AI를 쓰는데 맥락이 분산되어 일관성이 깨졌다. 세션이 끊기면 맥락이 날아갔다. 3시간 동안 쌓아온 작업이 사라진 적도 있다. 해결책은 파일이었다. 사고는 휘발되고, 기록은 남는다. CLAUDE.md는 AI가 읽는 운영 매뉴얼이다. 처음엔 하나의 파일에 모든 걸 넣었다. 300줄이 넘자 응답이 느려졌다. rules/ 폴더로 나눠 온디맨드로 로드하도록 바꿨다. common-mistakes.md도 만들었다. AI도 같은 실수를 반복한다는 걸 알게 됐기 때문이다.
+          여러 AI를 쓰는데 맥락이 분산되어 일관성이 깨졌다. 세션이 끊기면 맥락이 날아갔다. 3시간 동안 쌓아온 작업이 사라진 적도 있다. 해결책은 파일이었다. 사고는 휘발되고, 기록은 남는다. CLAUDE.md는 AI가 읽는 운영 매뉴얼이다. 처음엔 하나의 파일에 모든 걸 넣었다. 146줄이 넘자 응답이 느려졌다. rules/ 폴더로 나눠 온디맨드로 로드하도록 바꿨다. common-mistakes.md도 만들었다. AI도 같은 실수를 반복한다는 걸 알게 됐기 때문이다.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
           {CONTEXT_LAYERS.map((layer) => (
@@ -469,7 +544,62 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* 6. 멀티 AI 역할 분담 */}
+      {/* 9. 설정 계층 구조 */}
+      <div>
+        <div style={label}>설정 계층 구조</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          Claude는 세션 시작 시 여러 레벨의 설정 파일을 자동으로 로드한다. 상위 레벨일수록 모든 프로젝트에 적용되고, 하위 레벨일수록 해당 프로젝트에만 적용된다. 이 계층 덕분에 공통 규칙은 한 번만 정의하고, 프로젝트별 규칙은 필요한 곳에만 넣을 수 있다.
+        </p>
+        <div style={{ fontFamily: "monospace", fontSize: 12, background: "#fafafa", border: "1px solid #e5e5e5", borderRadius: 10, padding: "20px 24px", lineHeight: 2 }}>
+          {[
+            { indent: 0, path: "~/.claude/CLAUDE.md", desc: "전역 원칙 (4줄)", badge: "항상 로드" },
+            { indent: 0, path: "~/.claude/rules/", desc: "공통 규칙 모듈", badge: "항상 로드" },
+            { indent: 0, path: "~/.claude/agents/", desc: "에이전트 14개 정의", badge: "호출 시 로드" },
+            { indent: 0, path: "~/.claude/skills/", desc: "스킬 17개 정의", badge: "호출 시 로드" },
+            { indent: 1, path: "C:/dev/CLAUDE.md", desc: "볼트 전역 설정", badge: "프로젝트 진입 시" },
+            { indent: 2, path: "./project/.claude/CLAUDE.md", desc: "프로젝트별 규칙", badge: "해당 프로젝트만" },
+            { indent: 2, path: "./project/.claude/rules/", desc: "경로별 조건부 규칙", badge: "파일 작업 시" },
+            { indent: 2, path: "./project/.claude/context/", desc: "컨텍스트 라이브러리", badge: "필요 시 @import" },
+          ].map((item) => (
+            <div key={item.path} style={{ display: "flex", alignItems: "center", gap: 12, paddingLeft: item.indent * 24 }}>
+              <span style={{ color: "#888", flexShrink: 0 }}>{item.indent === 0 ? "├" : item.indent === 1 ? "└─ ├" : "└─ └─"}</span>
+              <span style={{ color: "#2563eb", fontWeight: 600, flexShrink: 0 }}>{item.path}</span>
+              <span style={{ color: "#888" }}>—</span>
+              <span style={{ color: "#555", flexShrink: 0 }}>{item.desc}</span>
+              <span style={{ fontSize: 10, color: "#999", background: "#f0f0f0", borderRadius: 4, padding: "1px 6px", flexShrink: 0, marginLeft: "auto" }}>{item.badge}</span>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 12, color: "#888", margin: "12px 0 0", lineHeight: 1.6 }}>
+          ENABLE_EXPERIMENTAL_MCP_CLI=true 설정으로 MCP 도구도 온디맨드 로드. 도구 정의 토큰 소모를 최소화.
+        </p>
+      </div>
+
+      {/* 10. Obsidian Living Doc */}
+      <div>
+        <div style={label}>Obsidian Living Doc</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          문서가 죽어있으면 AI가 오래된 정보로 판단한다. 모든 문서를 "살아있게" 유지하는 구조가 필요했다. HOME.md가 중앙 허브(MOC)로 작동하고, 모든 프로젝트의 STATE.md는 매 세션 /sync로 갱신된다. Obsidian은 뷰어로만 쓴다. 편집은 Claude Code만 한다. 이 구조 덕분에 어떤 AI든 GitHub Pages URL 하나로 현재 상태를 읽을 수 있다.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 }}>
+          {[
+            { label: "HOME.md", desc: "중앙 허브 (MOC). 모든 프로젝트 현황 + 미결 사항 + 오늘 세션 링크.", color: "#2563eb", bg: "#eff4ff", border: "#c7d7fd" },
+            { label: "STATE.md", desc: "프로젝트별 단일 상태 파일. 현재 진행 중인 것 · 완료 · 다음 단계.", color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe" },
+            { label: "PLANNING.md", desc: "아키텍처 결정 기록 (ADR). 왜 그 결정을 했는가.", color: "#059669", bg: "#ecfdf5", border: "#a7f3d0" },
+            { label: "KNOWLEDGE.md", desc: "모범 사례 + 패턴 누적. 같은 판단을 반복하지 않기 위한 참조.", color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+          ].map((doc) => (
+            <div key={doc.label} style={{ border: `1px solid ${doc.border}`, borderRadius: 10, padding: "14px 16px", background: doc.bg }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: doc.color, fontFamily: "monospace", marginBottom: 6 }}>{doc.label}</div>
+              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.5, margin: 0 }}>{doc.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 12, color: "#888", margin: "12px 0 0", lineHeight: 1.6 }}>
+          Obsidian = 뷰어 (편집 금지) · Git = SoT · GitHub Pages = AI 읽기 엔드포인트. 모든 AI가 동일한 URL로 현재 상태를 공유한다.
+        </p>
+      </div>
+
+      {/* 11. 멀티 AI 오케스트레이션 — AI_ROLES 카드만 */}
       <div>
         <div style={label}>멀티 AI 오케스트레이션</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
@@ -504,7 +634,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* 7. GitHub & 자동화 연동 */}
+      {/* 12. GitHub & 자동화 연동 */}
       <div>
         <div style={label}>GitHub & 자동화 연동</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
@@ -552,7 +682,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* 8. 훅 + 스킬 목록 */}
+      {/* 13. 훅 + 스킬 목록 */}
       <div
         style={{
           display: "grid",
@@ -592,7 +722,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
 
         {/* 스킬 */}
         <div>
-          <div style={label}>스킬 시스템 (17개)</div>
+          <div style={label}>스킬 시스템 (주요 8개 / 전체 17개)</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {SKILL_GROUPS.map((grp) => (
               <div key={grp.label}>
@@ -622,7 +752,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* MCP 서버 */}
+      {/* 14. MCP 서버 */}
       <div>
         <div style={label}>MCP 서버 (3개)</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 12px" }}>
@@ -661,97 +791,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* A. 설계 철학 7가지 */}
-      <div>
-        <div style={label}>설계 철학</div>
-        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
-          여러 AI를 쓰면서 정보가 흩어지고 컨텍스트가 날아가는 문제를 해결하려면, 철학이 먼저 있어야 했다. 도구를 먼저 고르면 구조가 도구에 종속된다. 원칙을 먼저 세우면 도구는 교체 가능해진다.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}>
-          {[
-            { title: "단일 진실 소스", desc: "STATE.md가 유일한 진실. 다른 경로는 읽기만 한다.", icon: "①" },
-            { title: "쓰기 권한 분리", desc: "Claude Code만 파일을 쓴다. 나머지 AI는 읽기만 한다.", icon: "②" },
-            { title: "사고는 휘발, 기록은 남는다", desc: "GPT 사고 → 파일 기록 → Claude 실행 → Git 영구 보존", icon: "③" },
-            { title: "토큰은 자원", desc: "CLAUDE.md 146줄 → 4줄로 압축. 매 턴 38,000토큰 절감. (초기 버전 기준)", icon: "④" },
-            { title: "구조가 규율을 강제한다", desc: "규칙이 단순할수록 일관성은 올라간다. 복잡한 규칙은 깨진다.", icon: "⑤" },
-            { title: "자동화는 최소한으로", desc: "자동화가 늘수록 통제 밖의 일이 생긴다. 핵심 3가지만.", icon: "⑥" },
-            { title: "세션 간 기억", desc: "Auto Memory 3단계: 감지 → 검증 → 정리. 세션이 끊겨도 기억한다.", icon: "⑦" },
-          ].map((p) => (
-            <div key={p.title} style={{ border: "1px solid #e5e5e5", borderRadius: 10, padding: "16px 18px", background: "#fafafa" }}>
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 6 }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#2563eb", flexShrink: 0 }}>{p.icon}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a1a" }}>{p.title}</span>
-              </div>
-              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.6, margin: 0, paddingLeft: 23 }}>{p.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* B. AI 역할 매트릭스 */}
-      <div>
-        <div style={label}>AI 역할 매트릭스</div>
-        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
-          쓰기 권한은 Claude Code 하나에만 있다. 나머지는 GitHub Pages URL을 통해 읽기만 한다. 이 구조 덕분에 충돌이 없다.
-        </p>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-            <thead>
-              <tr style={{ background: "#f5f5f5" }}>
-                {["AI", "역할", "파일 쓰기", "특화"].map((h) => (
-                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontWeight: 700, color: "#1a1a1a", borderBottom: "1px solid #e5e5e5" }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { ai: "Claude Code", role: "실행 + 기록", write: "✅ 유일", spec: "파일 수정 · 커밋 · 에이전트 오케스트레이션" },
-                { ai: "GPT (Codex xhigh)", role: "전략 · 비판 검토", write: "❌", spec: "설계 크로스 검증 · Canvas 시각화 · /gpt-review" },
-                { ai: "Gemini CLI", role: "대규모 분석", write: "❌", spec: "1M 토큰 컨텍스트 · 코드베이스 전체 탐색" },
-                { ai: "Perplexity", role: "실시간 리서치", write: "❌", spec: "최신 정보 · 소스 URL 포함 검색" },
-              ].map((row, i) => (
-                <tr key={row.ai} style={{ background: i % 2 === 0 ? "#fff" : "#fafafa" }}>
-                  <td style={{ padding: "10px 14px", fontWeight: 600, color: "#2563eb", borderBottom: "1px solid #e5e5e5" }}>{row.ai}</td>
-                  <td style={{ padding: "10px 14px", color: "#1a1a1a", borderBottom: "1px solid #e5e5e5" }}>{row.role}</td>
-                  <td style={{ padding: "10px 14px", borderBottom: "1px solid #e5e5e5" }}>{row.write}</td>
-                  <td style={{ padding: "10px 14px", color: "#666", borderBottom: "1px solid #e5e5e5" }}>{row.spec}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* C. 4가지 작업 패턴 */}
-      <div>
-        <div style={label}>일일 작업 패턴</div>
-        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
-          모든 작업은 4가지 패턴 중 하나로 귀결된다. 어떤 패턴인지 먼저 판단하면 어떤 AI를 어떤 순서로 쓸지 자동으로 결정된다.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
-          {[
-            { label: "패턴 A", title: "단순 실행", flow: ["Claude Code", "→ /sync"], desc: "명확한 태스크. 직접 실행 후 커밋.", color: "#2563eb", bg: "#eff4ff", border: "#c7d7fd" },
-            { label: "패턴 B", title: "설계 + 실행", flow: ["GPT (전략)", "→ 파일 기록", "→ Claude 실행", "→ /sync"], desc: "복잡한 결정이 필요할 때. GPT가 방향을 잡으면 Claude가 실행한다.", color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe" },
-            { label: "패턴 C", title: "리서치 + 실행", flow: ["Perplexity (검색)", "→ Claude 실행", "→ /sync"], desc: "최신 정보가 필요할 때. Perplexity가 찾으면 Claude가 적용한다.", color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
-            { label: "패턴 D", title: "검증 + 수정", flow: ["Gemini (전체 분석)", "→ Claude 수정", "→ /sync"], desc: "코드베이스 전체 검토 필요 시. Gemini 1M 토큰으로 전체를 보고 Claude가 수정한다.", color: "#059669", bg: "#ecfdf5", border: "#a7f3d0" },
-          ].map((p) => (
-            <div key={p.label} style={{ border: `1px solid ${p.border}`, borderRadius: 10, padding: "16px 18px", background: p.bg }}>
-              <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: p.color, textTransform: "uppercase", letterSpacing: "0.04em", background: "#fff", border: `1px solid ${p.border}`, borderRadius: 20, padding: "2px 8px" }}>{p.label}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a1a" }}>{p.title}</span>
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 10 }}>
-                {p.flow.map((step) => (
-                  <span key={step} style={{ fontSize: 11, color: p.color, fontWeight: 500 }}>{step}</span>
-                ))}
-              </div>
-              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* D. 주요 설계 결정 */}
+      {/* 15. 주요 설계 결정 ADR */}
       <div>
         <div style={label}>주요 설계 결정 (ADR)</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
@@ -793,64 +833,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
-      {/* E. 설정 계층 구조 */}
-      <div>
-        <div style={label}>설정 계층 구조</div>
-        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
-          Claude는 세션 시작 시 여러 레벨의 설정 파일을 자동으로 로드한다. 상위 레벨일수록 모든 프로젝트에 적용되고, 하위 레벨일수록 해당 프로젝트에만 적용된다. 이 계층 덕분에 공통 규칙은 한 번만 정의하고, 프로젝트별 규칙은 필요한 곳에만 넣을 수 있다.
-        </p>
-        <div style={{ fontFamily: "monospace", fontSize: 12, background: "#fafafa", border: "1px solid #e5e5e5", borderRadius: 10, padding: "20px 24px", lineHeight: 2 }}>
-          {[
-            { indent: 0, path: "~/.claude/CLAUDE.md", desc: "전역 원칙 (4줄)", badge: "항상 로드" },
-            { indent: 0, path: "~/.claude/rules/", desc: "공통 규칙 모듈", badge: "항상 로드" },
-            { indent: 0, path: "~/.claude/agents/", desc: "에이전트 14개 정의", badge: "호출 시 로드" },
-            { indent: 0, path: "~/.claude/skills/", desc: "스킬 17개 정의", badge: "호출 시 로드" },
-            { indent: 1, path: "C:/dev/CLAUDE.md", desc: "볼트 전역 설정", badge: "프로젝트 진입 시" },
-            { indent: 2, path: "./project/.claude/CLAUDE.md", desc: "프로젝트별 규칙", badge: "해당 프로젝트만" },
-            { indent: 2, path: "./project/.claude/rules/", desc: "경로별 조건부 규칙", badge: "파일 작업 시" },
-            { indent: 2, path: "./project/.claude/context/", desc: "컨텍스트 라이브러리", badge: "필요 시 @import" },
-          ].map((item) => (
-            <div key={item.path} style={{ display: "flex", alignItems: "center", gap: 12, paddingLeft: item.indent * 24 }}>
-              <span style={{ color: "#888", flexShrink: 0 }}>{item.indent === 0 ? "├" : item.indent === 1 ? "└─ ├" : "└─ └─"}</span>
-              <span style={{ color: "#2563eb", fontWeight: 600, flexShrink: 0 }}>{item.path}</span>
-              <span style={{ color: "#888" }}>—</span>
-              <span style={{ color: "#555", flexShrink: 0 }}>{item.desc}</span>
-              <span style={{ fontSize: 10, color: "#999", background: "#f0f0f0", borderRadius: 4, padding: "1px 6px", flexShrink: 0, marginLeft: "auto" }}>{item.badge}</span>
-            </div>
-          ))}
-        </div>
-        <p style={{ fontSize: 12, color: "#888", margin: "12px 0 0", lineHeight: 1.6 }}>
-          ENABLE_EXPERIMENTAL_MCP_CLI=true 설정으로 MCP 도구도 온디맨드 로드. 도구 정의 토큰 소모를 최소화.
-        </p>
-      </div>
-
-      {/* F. Claude 에이전트 모델 선택 */}
-      <div>
-        <div style={label}>에이전트 모델 선택 전략</div>
-        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
-          각 에이전트는 역할에 맞는 모델을 지정한다. 무조건 Opus를 쓰면 비용이 폭증하고, 무조건 Haiku를 쓰면 품질이 떨어진다. 작업 난이도에 따라 모델을 분리하는 것이 핵심이다.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-          {[
-            { model: "Haiku", role: "수집·확인·포맷", agents: ["commit-writer", "morning-briefer"], color: "#059669", bg: "#ecfdf5", border: "#a7f3d0", desc: "빠르고 저렴. 반복 작업에 최적." },
-            { model: "Sonnet", role: "분석·검색·중간 복잡도", agents: ["orch-state", "compressor", "pf-context", "pf-deployer", "gemini-analyzer"], color: "#2563eb", bg: "#eff4ff", border: "#c7d7fd", desc: "속도와 품질의 균형. 기본값." },
-            { model: "Opus", role: "설계·리뷰·복잡한 실행", agents: ["code-reviewer", "pf-reviewer", "orch-doc-writer", "security-auditor"], color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe", desc: "품질이 중요할 때. 핵심 결정에만." },
-          ].map((m) => (
-            <div key={m.model} style={{ border: `1px solid ${m.border}`, borderRadius: 10, padding: "16px 18px", background: m.bg }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: m.color, marginBottom: 4 }}>{m.model}</div>
-              <div style={{ fontSize: 11, color: "#555", fontWeight: 600, marginBottom: 10 }}>{m.role}</div>
-              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.5, margin: "0 0 12px" }}>{m.desc}</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                {m.agents.map((a) => (
-                  <span key={a} style={{ fontSize: 10, color: m.color, background: "#fff", border: `1px solid ${m.border}`, borderRadius: 4, padding: "2px 6px", fontFamily: "monospace" }}>{a}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 클로징 */}
+      {/* 16. 클로징 */}
       <div style={{ borderTop: "1px solid #e5e5e5", paddingTop: 32 }}>
         <p style={{ fontSize: 14, fontWeight: 600, color: "#1a1a1a", lineHeight: 1.7, margin: "0 0 8px", borderLeft: "3px solid #2563eb", paddingLeft: 14 }}>
           이 섹션 자체가 이 시스템으로 만들어졌다.
