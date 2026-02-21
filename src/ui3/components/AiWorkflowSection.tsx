@@ -155,7 +155,7 @@ const AI_ROLES: AiRole[] = [
     border: C.purpleBorder,
   },
   {
-    name: "GPT-4o",
+    name: "GPT (Codex xhigh)",
     role: "비판적 검토",
     detail: "/gpt-review 스킬 · 설계 크로스 검증",
     color: C.green,
@@ -296,7 +296,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
       <div>
         <div style={label}>에이전트 아키텍처 (14개)</div>
         <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
-          각 에이전트는 하나의 역할만 가진다. code-reviewer는 리뷰만, commit-writer는 커밋 메시지만. 역할이 명확해야 에이전트가 딱딱 떨어지게 작동한다. 역할이 겹치는 순간 어느 에이전트가 처리할지 불명확해지고, AI가 판단을 포기하거나 잘못된 판단을 내린다. PROACTIVELY 에이전트 4개는 별도 호출 없이 상황을 감지해 자동으로 개입한다.
+          각 에이전트는 하나의 역할만 가진다. code-reviewer는 리뷰만, commit-writer는 커밋 메시지만. 역할이 명확해야 에이전트가 딱딱 떨어지게 작동한다. 역할이 겹치는 순간 어느 에이전트가 처리할지 불명확해지고, AI가 판단을 포기하거나 잘못된 판단을 내린다. PROACTIVELY 에이전트 4개는 별도 호출 없이 상황을 감지해 자동으로 개입한다. 초기에는 Claude를 reader/executor/architect 3가지 모드로 구분하는 방식을 검토했으나, 현재는 에이전트별 model: haiku/sonnet/opus 직접 지정 방식으로 전환됐다. <span style={{ color: "#999" }}>(구 설계 컨셉)</span>
         </p>
         <div
           style={{
@@ -652,7 +652,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
             { title: "단일 진실 소스", desc: "STATE.md가 유일한 진실. 다른 경로는 읽기만 한다.", icon: "①" },
             { title: "쓰기 권한 분리", desc: "Claude Code만 파일을 쓴다. 나머지 AI는 읽기만 한다.", icon: "②" },
             { title: "사고는 휘발, 기록은 남는다", desc: "GPT 사고 → 파일 기록 → Claude 실행 → Git 영구 보존", icon: "③" },
-            { title: "토큰은 자원", desc: "CLAUDE.md 146줄 → 4줄로 압축. 매 턴 38,000토큰 절감.", icon: "④" },
+            { title: "토큰은 자원", desc: "CLAUDE.md 146줄 → 4줄로 압축. 매 턴 38,000토큰 절감. (초기 버전 기준)", icon: "④" },
             { title: "구조가 규율을 강제한다", desc: "규칙이 단순할수록 일관성은 올라간다. 복잡한 규칙은 깨진다.", icon: "⑤" },
             { title: "자동화는 최소한으로", desc: "자동화가 늘수록 통제 밖의 일이 생긴다. 핵심 3가지만.", icon: "⑥" },
             { title: "세션 간 기억", desc: "Auto Memory 3단계: 감지 → 검증 → 정리. 세션이 끊겨도 기억한다.", icon: "⑦" },
@@ -686,7 +686,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
             <tbody>
               {[
                 { ai: "Claude Code", role: "실행 + 기록", write: "✅ 유일", spec: "파일 수정 · 커밋 · 에이전트 오케스트레이션" },
-                { ai: "GPT-4o", role: "전략 · 비판 검토", write: "❌", spec: "설계 크로스 검증 · Canvas 시각화 · /gpt-review" },
+                { ai: "GPT (Codex xhigh)", role: "전략 · 비판 검토", write: "❌", spec: "설계 크로스 검증 · Canvas 시각화 · /gpt-review" },
                 { ai: "Gemini CLI", role: "대규모 분석", write: "❌", spec: "1M 토큰 컨텍스트 · 코드베이스 전체 탐색" },
                 { ai: "Perplexity", role: "실시간 리서치", write: "❌", spec: "최신 정보 · 소스 URL 포함 검색" },
               ].map((row, i) => (
@@ -742,7 +742,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
             { id: "D-001", title: "SoT를 Git으로 전환", problem: "Obsidian만으로는 다른 AI가 접근 불가", solution: "Git STATE.md → GitHub Pages URL로 모든 AI 공유", impact: "AI 간 정보 동기화 해결" },
             { id: "D-003", title: "Jeff Su 폴더 방법론 채택", problem: "파일이 늘수록 구조가 무너짐", solution: "5레벨 MAX, 2자리 넘버링, 99=Archive 규칙", impact: "자동 정렬 + 명확성" },
             { id: "D-005", title: "CLAUDE.md 대폭 축소", problem: "146줄 CLAUDE.md로 매 턴 38K 토큰 낭비", solution: "4줄 핵심 + rules/ 온디맨드 로드", impact: "세션당 38,000토큰 절감" },
-            { id: "D-014", title: "Orchestrator 삭제", problem: "중간 레이어가 맥락 희석 + 속도 저하", solution: "Claude가 직접 라우팅, 에이전트 직접 호출", impact: "응답 속도 향상 + 맥락 보존" },
+            { id: "D-014", title: "Orchestrator Agent 삭제", problem: "중간 레이어가 맥락 희석 + 속도 저하 (구 버전에서 존재하던 별도 Orchestrator 에이전트)", solution: "Claude가 직접 라우팅, 에이전트 직접 호출", impact: "응답 속도 향상 + 맥락 보존" },
             { id: "D-018", title: "Auto Memory 3단계 구축", problem: "세션 간 컨텍스트 완전 소실", solution: "SessionEnd→pending.md→검증→MEMORY.md", impact: "세션 재시작 시 5초 내 맥락 복구" },
           ].map((d, i, arr) => (
             <div key={d.id} style={{ display: "flex", gap: 16 }}>
@@ -767,6 +767,63 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* E. 설정 계층 구조 */}
+      <div>
+        <div style={label}>설정 계층 구조</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          Claude는 세션 시작 시 여러 레벨의 설정 파일을 자동으로 로드한다. 상위 레벨일수록 모든 프로젝트에 적용되고, 하위 레벨일수록 해당 프로젝트에만 적용된다. 이 계층 덕분에 공통 규칙은 한 번만 정의하고, 프로젝트별 규칙은 필요한 곳에만 넣을 수 있다.
+        </p>
+        <div style={{ fontFamily: "monospace", fontSize: 12, background: "#fafafa", border: "1px solid #e5e5e5", borderRadius: 10, padding: "20px 24px", lineHeight: 2 }}>
+          {[
+            { indent: 0, path: "~/.claude/CLAUDE.md", desc: "전역 원칙 (4줄)", badge: "항상 로드" },
+            { indent: 0, path: "~/.claude/rules/", desc: "공통 규칙 모듈", badge: "항상 로드" },
+            { indent: 0, path: "~/.claude/agents/", desc: "에이전트 14개 정의", badge: "호출 시 로드" },
+            { indent: 0, path: "~/.claude/skills/", desc: "스킬 17개 정의", badge: "호출 시 로드" },
+            { indent: 1, path: "C:/dev/CLAUDE.md", desc: "볼트 전역 설정", badge: "프로젝트 진입 시" },
+            { indent: 2, path: "./project/.claude/CLAUDE.md", desc: "프로젝트별 규칙", badge: "해당 프로젝트만" },
+            { indent: 2, path: "./project/.claude/rules/", desc: "경로별 조건부 규칙", badge: "파일 작업 시" },
+            { indent: 2, path: "./project/.claude/context/", desc: "컨텍스트 라이브러리", badge: "필요 시 @import" },
+          ].map((item) => (
+            <div key={item.path} style={{ display: "flex", alignItems: "center", gap: 12, paddingLeft: item.indent * 24 }}>
+              <span style={{ color: "#888", flexShrink: 0 }}>{item.indent === 0 ? "├" : item.indent === 1 ? "└─ ├" : "└─ └─"}</span>
+              <span style={{ color: "#2563eb", fontWeight: 600, flexShrink: 0 }}>{item.path}</span>
+              <span style={{ color: "#888" }}>—</span>
+              <span style={{ color: "#555", flexShrink: 0 }}>{item.desc}</span>
+              <span style={{ fontSize: 10, color: "#999", background: "#f0f0f0", borderRadius: 4, padding: "1px 6px", flexShrink: 0, marginLeft: "auto" }}>{item.badge}</span>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 12, color: "#888", margin: "12px 0 0", lineHeight: 1.6 }}>
+          ENABLE_EXPERIMENTAL_MCP_CLI=true 설정으로 MCP 도구도 온디맨드 로드. 도구 정의 토큰 소모를 최소화.
+        </p>
+      </div>
+
+      {/* F. Claude 에이전트 모델 선택 */}
+      <div>
+        <div style={label}>에이전트 모델 선택 전략</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          각 에이전트는 역할에 맞는 모델을 지정한다. 무조건 Opus를 쓰면 비용이 폭증하고, 무조건 Haiku를 쓰면 품질이 떨어진다. 작업 난이도에 따라 모델을 분리하는 것이 핵심이다.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+          {[
+            { model: "Haiku", role: "수집·확인·포맷", agents: ["commit-writer", "morning-briefer"], color: "#059669", bg: "#ecfdf5", border: "#a7f3d0", desc: "빠르고 저렴. 반복 작업에 최적." },
+            { model: "Sonnet", role: "분석·검색·중간 복잡도", agents: ["orch-state", "compressor", "pf-context", "pf-deployer", "gemini-analyzer"], color: "#2563eb", bg: "#eff4ff", border: "#c7d7fd", desc: "속도와 품질의 균형. 기본값." },
+            { model: "Opus", role: "설계·리뷰·복잡한 실행", agents: ["code-reviewer", "pf-reviewer", "orch-doc-writer", "security-auditor"], color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe", desc: "품질이 중요할 때. 핵심 결정에만." },
+          ].map((m) => (
+            <div key={m.model} style={{ border: `1px solid ${m.border}`, borderRadius: 10, padding: "16px 18px", background: m.bg }}>
+              <div style={{ fontSize: 16, fontWeight: 700, color: m.color, marginBottom: 4 }}>{m.model}</div>
+              <div style={{ fontSize: 11, color: "#555", fontWeight: 600, marginBottom: 10 }}>{m.role}</div>
+              <p style={{ fontSize: 12, color: "#666", lineHeight: 1.5, margin: "0 0 12px" }}>{m.desc}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                {m.agents.map((a) => (
+                  <span key={a} style={{ fontSize: 10, color: m.color, background: "#fff", border: `1px solid ${m.border}`, borderRadius: 4, padding: "2px 6px", fontFamily: "monospace" }}>{a}</span>
+                ))}
               </div>
             </div>
           ))}
