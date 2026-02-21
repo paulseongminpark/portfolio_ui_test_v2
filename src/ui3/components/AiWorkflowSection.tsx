@@ -182,15 +182,15 @@ const HOOKS = [
 ];
 
 // ── 스킬 목록 ─────────────────────────────────────────────────────
-const SKILL_GROUPS: { label: string; skills: { name: string; desc: string | null }[] }[] = [
+const SKILL_GROUPS: { label: string; skills: { name: string; desc: string }[] }[] = [
   {
     label: "운영",
     skills: [
       { name: "/morning", desc: "모든 프로젝트 현황 + TODO 통합 브리핑" },
       { name: "/catchup", desc: "새 세션 시작 시 5초 만에 이전 작업 복구" },
-      { name: "/sync-all", desc: null },
-      { name: "/todo", desc: null },
-      { name: "/session-insights", desc: null },
+      { name: "/sync-all", desc: "전체 프로젝트 STATE 갱신 + git push" },
+      { name: "/todo", desc: "daily-memo Inbox 동기화 + 할 일 관리" },
+      { name: "/session-insights", desc: "현재 세션 토큰 소비 + 비용 분석" },
     ],
   },
   {
@@ -198,8 +198,8 @@ const SKILL_GROUPS: { label: string; skills: { name: string; desc: string | null
     skills: [
       { name: "/research", desc: "코드베이스 + 웹 딥 리서치 워크플로우" },
       { name: "/gpt-review", desc: "설계·플랜을 GPT 비판적 리뷰용 프롬프트로 포맷" },
-      { name: "/docs-review", desc: null },
-      { name: "/handoff", desc: null },
+      { name: "/docs-review", desc: "stale 문서 감지 + 업데이트 방향 제안" },
+      { name: "/handoff", desc: "다른 AI에게 전달할 컨텍스트 문서 생성" },
     ],
   },
   {
@@ -207,7 +207,7 @@ const SKILL_GROUPS: { label: string; skills: { name: string; desc: string | null
     skills: [
       { name: "/commit-push-pr", desc: "커밋·푸시·PR 생성을 한 번에" },
       { name: "/verify", desc: "모든 프로젝트 규칙 검증 (커밋 전 실행)" },
-      { name: "/verify-project-rules", desc: null },
+      { name: "/verify-project-rules", desc: "브랜치·커밋 메시지·STATE 형식 검증" },
     ],
   },
   {
@@ -215,9 +215,9 @@ const SKILL_GROUPS: { label: string; skills: { name: string; desc: string | null
     skills: [
       { name: "/skill-creator", desc: "새 스킬 파일 구조화 + 패키징 가이드" },
       { name: "/subagent-creator", desc: "전문 에이전트 설계 + 시스템 프롬프트 작성" },
-      { name: "/hook-creator", desc: null },
-      { name: "/write", desc: null },
-      { name: "/memory-review", desc: null },
+      { name: "/hook-creator", desc: "Claude Code 훅 이벤트 설정 + 레퍼런스" },
+      { name: "/write", desc: "글쓰기 프로세스 — 질문 → 구조화 → 초안 → 퇴고" },
+      { name: "/memory-review", desc: "MEMORY.md 주간 정리 및 품질 관리" },
     ],
   },
 ];
@@ -766,22 +766,19 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         {/* 스킬 */}
         <div>
           <div style={label}>스킬 시스템 (17개)</div>
+          <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 12px" }}>
+            스킬은 반복 작업을 명령어 하나로 압축한 것이다. /morning 하나로 모든 프로젝트 현황이 나온다. /catchup 하나로 새 세션을 시작해도 이전 작업 맥락이 5초 안에 복구된다. 매번 같은 설명을 반복하지 않아도 되는 구조를 만드는 것이 스킬의 목적이다.
+          </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {SKILL_GROUPS.map((grp) => (
               <div key={grp.label}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: C.dimmer, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 8 }}>{grp.label}</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   {grp.skills.map((sk) => (
-                    sk.desc ? (
-                      <div key={sk.name} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>{sk.name}</span>
-                        <span style={{ fontSize: 12, color: C.muted, lineHeight: 1.5 }}>{sk.desc}</span>
-                      </div>
-                    ) : (
-                      <div key={sk.name} style={{ display: "inline-flex" }}>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px" }}>{sk.name}</span>
-                      </div>
-                    )
+                    <div key={sk.name} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>{sk.name}</span>
+                      <span style={{ fontSize: 12, color: C.muted, lineHeight: 1.5 }}>{sk.desc}</span>
+                    </div>
                   ))}
                 </div>
               </div>
