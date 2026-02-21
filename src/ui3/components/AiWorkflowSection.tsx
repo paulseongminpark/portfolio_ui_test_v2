@@ -182,12 +182,15 @@ const HOOKS = [
 ];
 
 // ── 스킬 목록 ─────────────────────────────────────────────────────
-const SKILL_GROUPS = [
+const SKILL_GROUPS: { label: string; skills: { name: string; desc: string | null }[] }[] = [
   {
     label: "운영",
     skills: [
       { name: "/morning", desc: "모든 프로젝트 현황 + TODO 통합 브리핑" },
       { name: "/catchup", desc: "새 세션 시작 시 5초 만에 이전 작업 복구" },
+      { name: "/sync-all", desc: null },
+      { name: "/todo", desc: null },
+      { name: "/session-insights", desc: null },
     ],
   },
   {
@@ -195,6 +198,8 @@ const SKILL_GROUPS = [
     skills: [
       { name: "/research", desc: "코드베이스 + 웹 딥 리서치 워크플로우" },
       { name: "/gpt-review", desc: "설계·플랜을 GPT 비판적 리뷰용 프롬프트로 포맷" },
+      { name: "/docs-review", desc: null },
+      { name: "/handoff", desc: null },
     ],
   },
   {
@@ -202,6 +207,7 @@ const SKILL_GROUPS = [
     skills: [
       { name: "/commit-push-pr", desc: "커밋·푸시·PR 생성을 한 번에" },
       { name: "/verify", desc: "모든 프로젝트 규칙 검증 (커밋 전 실행)" },
+      { name: "/verify-project-rules", desc: null },
     ],
   },
   {
@@ -209,6 +215,9 @@ const SKILL_GROUPS = [
     skills: [
       { name: "/skill-creator", desc: "새 스킬 파일 구조화 + 패키징 가이드" },
       { name: "/subagent-creator", desc: "전문 에이전트 설계 + 시스템 프롬프트 작성" },
+      { name: "/hook-creator", desc: null },
+      { name: "/write", desc: null },
+      { name: "/memory-review", desc: null },
     ],
   },
 ];
@@ -634,6 +643,40 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
         </div>
       </div>
 
+      {/* AI 역할 매트릭스 표 */}
+      <div>
+        <div style={label}>AI 역할 매트릭스</div>
+        <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, margin: "0 0 16px" }}>
+          쓰기 권한은 Claude Code 하나에만 있다. 나머지는 읽기만 한다. 이 구조 덕분에 충돌이 없다.
+        </p>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+            <thead>
+              <tr style={{ background: "#f5f5f5" }}>
+                {["AI", "역할", "파일 쓰기", "특화"].map((h) => (
+                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontWeight: 700, color: "#1a1a1a", borderBottom: "1px solid #e5e5e5" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { ai: "Claude Code", role: "실행 + 기록", write: "✅ 유일", spec: "파일 수정 · 커밋 · 에이전트 오케스트레이션" },
+                { ai: "GPT (Codex xhigh)", role: "전략 · 비판 검토", write: "❌", spec: "설계 크로스 검증 · Canvas 시각화 · /gpt-review" },
+                { ai: "Gemini CLI", role: "대규모 분석", write: "❌", spec: "1M 토큰 컨텍스트 · 코드베이스 전체 탐색" },
+                { ai: "Perplexity", role: "실시간 리서치", write: "❌", spec: "최신 정보 · 소스 URL 포함 검색" },
+              ].map((row, i) => (
+                <tr key={row.ai} style={{ background: i % 2 === 0 ? "#fff" : "#fafafa" }}>
+                  <td style={{ padding: "10px 14px", fontWeight: 600, color: "#2563eb", borderBottom: "1px solid #e5e5e5" }}>{row.ai}</td>
+                  <td style={{ padding: "10px 14px", color: "#1a1a1a", borderBottom: "1px solid #e5e5e5" }}>{row.role}</td>
+                  <td style={{ padding: "10px 14px", borderBottom: "1px solid #e5e5e5" }}>{row.write}</td>
+                  <td style={{ padding: "10px 14px", color: "#666", borderBottom: "1px solid #e5e5e5" }}>{row.spec}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* 12. GitHub & 자동화 연동 */}
       <div>
         <div style={label}>GitHub & 자동화 연동</div>
@@ -722,28 +765,23 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
 
         {/* 스킬 */}
         <div>
-          <div style={label}>스킬 시스템 (주요 8개 / 전체 17개)</div>
+          <div style={label}>스킬 시스템 (17개)</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {SKILL_GROUPS.map((grp) => (
               <div key={grp.label}>
-                <div
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 700,
-                    color: C.dimmer,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.04em",
-                    marginBottom: 6,
-                  }}
-                >
-                  {grp.label}
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 6 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: C.dimmer, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 8 }}>{grp.label}</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   {grp.skills.map((sk) => (
-                    <div key={sk.name} style={{ display: "flex", flexDirection: "column", gap: 2, background: "#fff", border: `1px solid ${C.purpleBorder}`, borderRadius: 8, padding: "8px 10px" }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, fontFamily: "monospace" }}>{sk.name}</span>
-                      <span style={{ fontSize: 11, color: C.muted, lineHeight: 1.4 }}>{sk.desc}</span>
-                    </div>
+                    sk.desc ? (
+                      <div key={sk.name} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px", whiteSpace: "nowrap", flexShrink: 0, fontFamily: "monospace" }}>{sk.name}</span>
+                        <span style={{ fontSize: 12, color: C.muted, lineHeight: 1.5 }}>{sk.desc}</span>
+                      </div>
+                    ) : (
+                      <div key={sk.name} style={{ display: "inline-flex" }}>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px", fontFamily: "monospace" }}>{sk.name}</span>
+                      </div>
+                    )
                   ))}
                 </div>
               </div>
