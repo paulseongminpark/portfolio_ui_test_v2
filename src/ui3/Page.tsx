@@ -11,6 +11,8 @@ import { TocPane } from "./components/TocPane";
 import { TechReviewCards } from "./components/TechReviewCards";
 import labRaw from "../content/lab.md?raw";
 import { LabRenderer } from "./components/LabRenderer";
+import aiWorkflowRaw from "../content/AI_WORKFLOW_KO.md?raw";
+import { AiWorkflowSection } from "./components/AiWorkflowSection";
 
 type TabOption = "All" | Category;
 
@@ -471,6 +473,14 @@ export default function UI3Page() {
                       <p className="section-description">
                         {renderBold(sys.relationBody)}
                       </p>
+                    </>
+                  ) : section.id === "system-ai" ? (
+                    <>
+                      <h2 className="section-title">{section.title}</h2>
+                      <p className="section-description">
+                        {section.description}
+                      </p>
+                      <AiWorkflowSection raw={aiWorkflowRaw} />
                     </>
                   ) : section.id === "tech-review" ? (
                     <>

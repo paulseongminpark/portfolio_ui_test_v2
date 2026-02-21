@@ -95,6 +95,15 @@ export const sections: Section[] = [
     description: 'Relation placeholder content',
     heroRatio: '16:9'
   },
+  {
+    id: 'system-ai',
+    category: 'System',
+    eyebrow: 'AI Workflow',
+    title: 'AI Native System',
+    shortTitle: 'AI System',
+    description: 'Claude Code + 14 Agents + Automated Workflow',
+    heroRatio: '16:9'
+  },
  {
   id: 's1',
   category: 'Work',
