@@ -3,3 +3,5 @@ markdown: kramdown
 include:
   - "*.md"
   - "context"
+exclude:
+  - docs/
