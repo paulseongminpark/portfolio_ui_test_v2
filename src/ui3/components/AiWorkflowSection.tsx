@@ -417,7 +417,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
               <p style={{ fontSize: 12, color: "#666", lineHeight: 1.5, margin: "0 0 12px" }}>{m.desc}</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                 {m.agents.map((a) => (
-                  <span key={a} style={{ fontSize: 10, color: m.color, background: "#fff", border: `1px solid ${m.border}`, borderRadius: 4, padding: "2px 6px", fontFamily: "monospace" }}>{a}</span>
+                  <span key={a} style={{ fontSize: 10, color: m.color, background: "#fff", border: `1px solid ${m.border}`, borderRadius: 4, padding: "2px 6px" }}>{a}</span>
                 ))}
               </div>
             </div>
@@ -598,7 +598,7 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
             { label: "KNOWLEDGE.md", desc: "모범 사례 + 패턴 누적. 같은 판단을 반복하지 않기 위한 참조.", color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
           ].map((doc) => (
             <div key={doc.label} style={{ border: `1px solid ${doc.border}`, borderRadius: 10, padding: "14px 16px", background: doc.bg }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: doc.color, fontFamily: "monospace", marginBottom: 6 }}>{doc.label}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: doc.color, marginBottom: 6 }}>{doc.label}</div>
               <p style={{ fontSize: 12, color: "#666", lineHeight: 1.5, margin: 0 }}>{doc.desc}</p>
             </div>
           ))}
@@ -774,12 +774,12 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
                   {grp.skills.map((sk) => (
                     sk.desc ? (
                       <div key={sk.name} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px", whiteSpace: "nowrap", flexShrink: 0, fontFamily: "monospace" }}>{sk.name}</span>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>{sk.name}</span>
                         <span style={{ fontSize: 12, color: C.muted, lineHeight: 1.5 }}>{sk.desc}</span>
                       </div>
                     ) : (
                       <div key={sk.name} style={{ display: "inline-flex" }}>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px", fontFamily: "monospace" }}>{sk.name}</span>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: C.purple, background: C.purpleBg, border: `1px solid ${C.purpleBorder}`, borderRadius: 6, padding: "2px 8px" }}>{sk.name}</span>
                       </div>
                     )
                   ))}
@@ -817,7 +817,6 @@ export function AiWorkflowSection({ raw: _raw }: AiWorkflowSectionProps) {
                   fontSize: 12,
                   fontWeight: 700,
                   color: C.teal,
-                  fontFamily: "monospace",
                   marginBottom: 4,
                 }}
               >
