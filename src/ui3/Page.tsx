@@ -13,6 +13,7 @@ import labRaw from "../content/lab.md?raw";
 import { LabRenderer } from "./components/LabRenderer";
 import aiWorkflowRaw from "../content/AI_WORKFLOW_KO.md?raw";
 import { AiWorkflowSection } from "./components/AiWorkflowSection";
+import { TechReviewSystemSection } from "./components/TechReviewSystemSection";
 
 type TabOption = "All" | Category;
 
@@ -489,6 +490,14 @@ export default function UI3Page() {
                         {section.description}
                       </p>
                       <TechReviewCards />
+                    </>
+                  ) : section.id === "tech-review-system" ? (
+                    <>
+                      <h2 className="section-title">{section.title}</h2>
+                      <p className="section-description">
+                        {section.description}
+                      </p>
+                      <TechReviewSystemSection />
                     </>
                   ) : section.id === "lab-ui" ? (
                     <>

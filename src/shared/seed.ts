@@ -164,6 +164,16 @@ export const sections: Section[] = [
     heroRatio: "16:9",
   },
   {
+    id: "tech-review-system",
+    category: "Writing",
+    eyebrow: "System Design",
+    title: "How It Works",
+    shortTitle: "TR System",
+    description:
+      "매일 자동 생성되는 AI 뉴스 큐레이션의 구조 — GitHub Actions, Perplexity API, Smart Brevity 파이프라인.",
+    heroRatio: "16:9",
+  },
+  {
     id: "resume-1",
     category: "Resume",
     eyebrow: "Updated 2026",
