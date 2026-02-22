@@ -17,21 +17,6 @@ import {
   AI_MATRIX_ROWS,
   ADRS,
   MCP_SERVERS,
-  type StatBadge,
-  type AgentGroup,
-  type AiRole,
-  type Hook,
-  type SkillGroup,
-  type Automation,
-  type ContextLayer,
-  type FlowStep,
-  type ModelGroup,
-  type DesignPrinciple,
-  type TimelineItem,
-  type DailyPattern,
-  type LivingDoc,
-  type ConfigLayer,
-  type Adr,
 } from "./aiWorkflowData";
 
 interface AiWorkflowSectionProps {
