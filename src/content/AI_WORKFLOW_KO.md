@@ -1,6 +1,6 @@
 # AI Native Orchestration System
 
-**Claude Code를 운영체제처럼 쓴다. What만 정의하면 14개 에이전트가 How를 결정하고 실행한다.**
+**Claude Code를 운영체제처럼 쓴다. What만 정의하면 16개 에이전트가 How를 결정하고 실행한다.**
 
 ## 시스템 진화
 
@@ -8,14 +8,14 @@
 - v2.0 (2026-02-21): 에이전트 14개, 훅 5종, MCP 3개, Gemini CLI 연동
 - v2.1 (2026-02-22): SOT METRICS 추가, pf-orchestrator, 컨텍스트 라이브러리
 
-## 에이전트 아키텍처 (14개)
+## 에이전트 아키텍처 (16개)
 
 - **PROACTIVELY**: code-reviewer, commit-writer, orch-state, compressor
 - **Portfolio**: pf-context, pf-reviewer, pf-deployer, pf-orchestrator
 - **Orchestration**: orch-doc-writer, orch-skill-builder
 - **Analysis**: gemini-analyzer (1M 토큰), security-auditor
 - **Monet-lab**: ml-experimenter, ml-porter
-- **Morning**: morning-briefer
+- **Content**: morning-briefer, content-writer
 
 ## 자동화 워크플로우
 
@@ -30,18 +30,22 @@ brainstorm → plan → implement → review → deploy
 - **@import로 모듈화**: 필요할 때만 온디맨드 로드
 - **common-mistakes.md**: 반복 실수 패턴 누적 → 자동 방지
 
-## 훅 시스템 (5종)
+## 훅 시스템 (9종)
 
 - **Stop Hook**: 미커밋 파일 감지 → 완료 선언 차단
 - **SessionStart**: 세션 시작 시 작업 로그 + git status 자동 출력
+- **SessionEnd**: 세션 종료 시 /sync 권장 알림
 - **PreToolUse**: rm -rf, git push --force 자동 차단
+- **PostToolUse**: Write/Edit 후 context 파일 변경 감지
+- **PreCompact**: compact 전 /verify 권장 알림
+- **Notification**: 비동기 알림 처리
 - **TeammateIdle**: Agent Teams 팀원 유휴 알림
 - **TaskCompleted**: 작업 완료 감지 알림
 
 ## 스킬 시스템 (17개)
 
 - **운영**: /morning, /todo, /sync-all, /catchup, /session-insights
-- **문서**: /docs-review, /research, /handoff, /gpt-review
+- **문서**: /docs-review, /research, /write, /gpt-review
 - **배포**: /commit-push-pr, /verify, /verify-project-rules
 - **생성**: /skill-creator, /subagent-creator, /hook-creator
 
@@ -67,4 +71,4 @@ brainstorm → plan → implement → review → deploy
 
 ## 핵심 숫자
 
-14 Agents · 17 Skills · 5 Hooks · 3 MCP Servers · 2 AI Tools · 1 Automation Hub
+16 Agents · 19 Skills · 9 Hooks · 3 MCP Servers · 2 AI Tools · 1 Automation Hub
